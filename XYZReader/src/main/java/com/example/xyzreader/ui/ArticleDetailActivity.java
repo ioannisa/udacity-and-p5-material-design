@@ -38,6 +38,8 @@ public class ArticleDetailActivity extends AppCompatActivity
     private View mUpButtonContainer;
     private View mUpButton;
 
+    private static final String DETAIL_FRAGMENT_KEY = "detail_fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,10 @@ public class ArticleDetailActivity extends AppCompatActivity
                             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
         setContentView(R.layout.activity_article_detail);
+
+        if (savedInstanceState != null) {
+            getFragmentManager().getFragment(savedInstanceState, DETAIL_FRAGMENT_KEY);
+        }
 
         getLoaderManager().initLoader(0, null, this);
 
@@ -176,5 +182,12 @@ public class ArticleDetailActivity extends AppCompatActivity
         public int getCount() {
             return (mCursor != null) ? mCursor.getCount() : 0;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //getSupportFragmentManager().findFragmentById(mPagerAdapter.getItem(0).getId())
+        getFragmentManager().putFragment(outState, DETAIL_FRAGMENT_KEY, mPagerAdapter.getItem(0));
     }
 }
